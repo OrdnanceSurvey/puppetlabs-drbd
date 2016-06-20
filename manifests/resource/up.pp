@@ -62,7 +62,6 @@ define drbd::resource::up (
     exec { "drbd_make_primary_again_${name}":
       command => "drbdadm primary ${name}",
       unless  => "drbdadm role ${name} | egrep '^Primary'",
-      onlyif  => "cat /proc/drbd | egrep \"ro:Secondary/Secondary ds:UpToDate/UpToDate\"",
       require => Service['drbd'],
     }
 
