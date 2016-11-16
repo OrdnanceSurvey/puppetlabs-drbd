@@ -5,24 +5,23 @@ resource <%= @name %> {
   disk      <%= @disk %>;
   meta-disk internal;
 
+  <% if defined? @number_of_nodes -%>
   # Number of Nodes:  <%= number_of_nodes -%>
-  <% if  number_of_nodes.to_i < 2 -%> 
+  <% if  @number_of_nodes.to_i < 2 -%> 
   startup { 
-  <% if @drbd_cluster_mode == "master" -%>
-    become-primary-on <%= @fqdn %>;
-  <% end -%>
     wfc-timeout "30";
   }
-  <% end -%>
 
+  <% end -%>
+  <% end -%>
 <% if @handlers -%>
   handlers {
   <% @handlers.sort_by {|k, v| k}.each do |k, v| -%>
     <%= k %> <%= v %>;
 <% end -%>
   }
-<% end -%>
 
+<% end -%>
   net {
     cram-hmac-alg sha1;
 <% if @secret -%>
